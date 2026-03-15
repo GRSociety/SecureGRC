@@ -1,4 +1,4 @@
-import { LayoutDashboard, Shield, Server, AlertTriangle, FileCheck, ChevronDown, Eye, Link } from "lucide-react";
+import { LayoutDashboard, Shield, Server, AlertTriangle, FileCheck, ChevronDown, Eye, Link, FolderTree, Bot, Cable, Upload } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import { useLocation } from "react-router-dom";
 import {
@@ -22,7 +22,13 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/component
 const mainItems = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
   { title: "Framework", url: "/framework", icon: Shield },
-  { title: "Assets", url: "/assets", icon: Server },
+];
+
+const assetSubItems = [
+  { title: "Asset Management", url: "/assets/management", icon: FolderTree },
+  { title: "Agents", url: "/assets/agents", icon: Bot },
+  { title: "APIs", url: "/assets/apis", icon: Cable },
+  { title: "Import", url: "/assets/import", icon: Upload },
 ];
 
 const riskSubItems = [
@@ -35,6 +41,7 @@ export function AppSidebar() {
   const collapsed = state === "collapsed";
   const location = useLocation();
   const isRiskActive = location.pathname.startsWith("/risks");
+  const isAssetActive = location.pathname.startsWith("/assets");
 
   return (
     <Sidebar collapsible="icon">
@@ -69,6 +76,39 @@ export function AppSidebar() {
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
+
+              {/* Risks with sub-menu */}
+              <Collapsible defaultOpen={isAssetActive} className="group/collapsible">
+                <SidebarMenuItem>
+                  <CollapsibleTrigger asChild>
+                    <SidebarMenuButton className="hover:bg-sidebar-accent/50 cursor-pointer">
+                      <Server className="mr-2 h-4 w-4" />
+                      {!collapsed && (
+                        <>
+                          <span className="flex-1">Assets</span>
+                          <ChevronDown className="h-3 w-3 transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                        </>
+                      )}
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  {!collapsed && (
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {assetSubItems.map((item) => (
+                          <SidebarMenuSubItem key={item.title}>
+                            <SidebarMenuSubButton asChild>
+                              <NavLink to={item.url} end className="hover:bg-sidebar-accent/50" activeClassName="bg-sidebar-accent text-sidebar-primary font-medium">
+                                <item.icon className="mr-2 h-3 w-3" />
+                                <span>{item.title}</span>
+                              </NavLink>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  )}
+                </SidebarMenuItem>
+              </Collapsible>
 
               {/* Risks with sub-menu */}
               <Collapsible defaultOpen={isRiskActive} className="group/collapsible">
