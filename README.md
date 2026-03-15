@@ -1,4 +1,4 @@
-# SecureGRC (atlas-grc)
+# SecureGRC
 
 A modern GRC (Governance, Risk, Compliance) tool. This project brings together asset management, risk analysis, compliance tracking, API/XML import, and AI-driven security planning in a single dashboard.
 
