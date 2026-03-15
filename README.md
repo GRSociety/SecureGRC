@@ -1,73 +1,145 @@
-# Welcome to your Lovable project
+# SecureGRC (atlas-grc)
 
-## Project info
+A modern GRC (Governance, Risk, Compliance) tool. This project brings together asset management, risk analysis, compliance tracking, API/XML import, and AI-driven security planning in a single dashboard.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Technologies
 
-## How can I edit this code?
+- `React 18` + `TypeScript`
+- `Vite`
+- `Tailwind CSS` + `shadcn/ui`
+- `React Router`
+- `Recharts`
+- `Vitest`
+- `@google/generative-ai` (Gemini integration)
 
-There are several ways of editing your application.
+## Core Features
 
-**Use Lovable**
+### 1. Dashboard and core GRC workflow
+- Assets (`assets`), risks (`risks`), and CIS controls are managed in local context.
+- Key metrics are calculated, including compliance percentage, active risk count, and non-compliant controls.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### 2. Asset Management
+- Add/update/delete assets.
+- Search and filtering.
+- Includes an `Impact (1-5)` field (currently UI-only, does not affect calculations yet).
 
-Changes made via Lovable will be committed automatically to this repo.
+### 3. Asset Agents
+- Three OS-specific agent options:
+  - Windows
+  - macOS
+  - Linux
+- OS detection, matching agent selection, download links, and install-command copy flow.
 
-**Use your preferred IDE**
+### 4. Asset APIs (categorized)
+Integrations are grouped by category, with at least 3 tools per category:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- `Vulnerability Management`
+  - Tenable
+  - Qualys VMDR
+  - Rapid7 InsightVM
+- `Asset Scanner`
+  - CrowdStrike Falcon Discover
+  - Lansweeper
+  - Nmap Enterprise
+- `LDAP / Directory`
+  - Active Directory LDAP
+  - OpenLDAP
+  - JumpCloud Directory
+- `CMDB / MDM`
+  - ServiceNow CMDB
+  - Microsoft Intune
+  - Jamf Pro
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+Functions:
+- Connect/Disconnect
+- Sync (mock discovery)
+- Import discovered assets directly into Assets
+- Skip duplicate asset names
 
-Follow these steps:
+### 5. Asset Import (XML)
+- For organizations without API support.
+- Scanner XML upload support.
+- Nmap XML and generic scanner XML parsing support.
+- Preview table, single-add, and bulk-add.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### 6. Risk Overview
+- Risk summary cards (Critical/High/Medium/Low)
+- Scatter heat map (Likelihood vs Impact)
+- 5x5 risk matrix table
+- Risk names rendered inside matrix cells
+- Matrix total vs all-risks consistency check
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 7. Compliance + AI Analysis
+- AI-powered compliance analysis and security plan using Gemini.
+- Model fallback mechanism (tries multiple model IDs).
+- Local heuristic fallback when API quota/model access fails (page remains usable).
 
-# Step 3: Install the necessary dependencies.
-npm i
+### 8. Auth UI
+- `/login`
+- `/register` (with department selection)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+Note: Auth is currently UI flow only (no backend auth integration yet).
+
+## Route Map
+
+- `/` - Dashboard
+- `/framework` - Framework
+- `/assets` - Asset Management
+- `/assets/management` - Asset Management
+- `/assets/agents` - Asset Agents
+- `/assets/apis` - Asset APIs
+- `/assets/import` - Asset Import
+- `/risks` - Risks Overview
+- `/risks/assets` - Asset Risk
+- `/compliance` - Compliance
+- `/login` - Login
+- `/register` - Register
+
+## Installation
+
+```bash
+npm install
+```
+
+## Development
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Build
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+npm run build
+```
 
-**Use GitHub Codespaces**
+## Test
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```bash
+npm test
+```
 
-## What technologies are used for this project?
+## Environment Variables
 
-This project is built with:
+Create a `.env` file in the project root:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```env
+VITE_GEMINI_API_KEY=your_gemini_api_key
+# optional
+VITE_GEMINI_MODEL=gemini-2.5-flash
+```
 
-## How can I deploy this project?
+Notes:
+- `VITE_GEMINI_API_KEY` is required for AI compliance analysis.
+- If model access or quota is unavailable, the app automatically returns local fallback analysis.
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## Current Limitations
 
-## Can I connect a custom domain to my Lovable project?
+- API integrations and Auth are not connected to a real backend yet (mock/UI-first workflow).
+- Asset `Impact` selection is not yet connected to risk scoring logic.
 
-Yes, you can!
+## Suggested Next Steps
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- Add real backend auth integration (JWT/session).
+- Add real credential management and test-connection endpoints for API connectors.
+- Include the asset impact field in risk scoring calculations.
